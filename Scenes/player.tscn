@@ -1,0 +1,136 @@
+[gd_scene format=3 uid="uid://c08inbijetwss"]
+
+[ext_resource type="Script" uid="uid://xp2ls2ivd2ws" path="res://Scripts/player.gd" id="1_cvnsp"]
+[ext_resource type="Texture2D" uid="uid://b8huiogmfx5dv" path="res://Assets/sprites/knight.png" id="1_v0iea"]
+[ext_resource type="Texture2D" uid="uid://c1duges1fn6k1" path="res://Assets/sprites/Thrust_fire.png" id="2_6t5aa"]
+[ext_resource type="PackedScene" uid="uid://ci3lbafbon6o8" path="res://Scenes/gun.tscn" id="4_vgqql"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x3wgy"]
+atlas = ExtResource("2_6t5aa")
+region = Rect2(0, 0, 98, 284)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3smsa"]
+atlas = ExtResource("2_6t5aa")
+region = Rect2(98, 0, 98, 284)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8erm5"]
+atlas = ExtResource("2_6t5aa")
+region = Rect2(196, 0, 98, 284)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1ek2"]
+atlas = ExtResource("2_6t5aa")
+region = Rect2(294, 0, 98, 284)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tx1dd"]
+atlas = ExtResource("2_6t5aa")
+region = Rect2(392, 0, 98, 284)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8jovo"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x3wgy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3smsa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8erm5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f1ek2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tx1dd")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cvnsp"]
+atlas = ExtResource("1_v0iea")
+region = Rect2(0, 0, 32, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6t5aa"]
+atlas = ExtResource("1_v0iea")
+region = Rect2(32, 0, 32, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vgqql"]
+atlas = ExtResource("1_v0iea")
+region = Rect2(64, 0, 32, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fkybt"]
+atlas = ExtResource("1_v0iea")
+region = Rect2(96, 0, 32, 36)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bjqgx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cvnsp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6t5aa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vgqql")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fkybt")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8jovo"]
+radius = 5.0
+height = 16.0
+
+[sub_resource type="Curve2D" id="Curve2D_vgqql"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -205, 119, 0, 0, 0, 0, -204, -141, 0, 0, 0, 0, 194, -140, 0, 0, 0, 0, 197, 118, 0, 0, 0, 0, -205, 120)
+}
+point_count = 5
+
+[node name="Player" type="CharacterBody2D" unique_id=1290961971]
+script = ExtResource("1_cvnsp")
+
+[node name="fire" type="AnimatedSprite2D" parent="." unique_id=479786590]
+position = Vector2(-1.0000001, 4)
+scale = Vector2(0.09948979, 0.048855636)
+sprite_frames = SubResource("SpriteFrames_8jovo")
+autoplay = "default"
+flip_v = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=741698453]
+position = Vector2(0, -10)
+sprite_frames = SubResource("SpriteFrames_bjqgx")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=742855576]
+position = Vector2(0, -8)
+shape = SubResource("CapsuleShape2D_8jovo")
+
+[node name="gun" parent="." unique_id=849406224 instance=ExtResource("4_vgqql")]
+position = Vector2(5, -6)
+
+[node name="Camera2D" type="Camera2D" parent="gun" unique_id=1154440505]
+position = Vector2(-5, -3)
+zoom = Vector2(4, 4)
+limit_left = -1432
+limit_top = -860
+limit_right = 1144
+limit_bottom = 70
+position_smoothing_enabled = true
+
+[node name="Path2D" type="Path2D" parent="." unique_id=1995169692]
+curve = SubResource("Curve2D_vgqql")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D" unique_id=1293769594]
+position = Vector2(-205, 119)
+rotation = -1.5669502
+
+[node name="Marker2D" type="Marker2D" parent="Path2D/PathFollow2D" unique_id=327751479]
+position = Vector2(-2.1212687, -2.3452537)

@@ -1,0 +1,86 @@
+[gd_scene format=3 uid="uid://fbju3kx4gpqe"]
+
+[ext_resource type="Script" uid="uid://wodt3wmaddyo" path="res://Scripts/enemy.gd" id="1_88kja"]
+[ext_resource type="Texture2D" uid="uid://b8huiogmfx5dv" path="res://Assets/sprites/knight.png" id="2_it8n0"]
+[ext_resource type="Script" uid="uid://cnt3n57jdb0ol" path="res://Scripts/killarea.gd" id="3_afpow"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gbyq6"]
+atlas = ExtResource("2_it8n0")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pbq55"]
+atlas = ExtResource("2_it8n0")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t38ji"]
+atlas = ExtResource("2_it8n0")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pbj7x"]
+atlas = ExtResource("2_it8n0")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8jovo"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gbyq6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pbq55")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t38ji")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pbj7x")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_afpow"]
+radius = 5.0
+height = 16.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8jovo"]
+radius = 7.0
+height = 16.0
+
+[node name="enemy" type="CharacterBody2D" unique_id=866004254]
+modulate = Color(1, 0.25882354, 0, 1)
+motion_mode = 1
+wall_min_slide_angle = 0.0
+script = ExtResource("1_88kja")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1939572205]
+position = Vector2(0, -12)
+sprite_frames = SubResource("SpriteFrames_8jovo")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=603836585]
+position = Vector2(0, -8)
+shape = SubResource("CapsuleShape2D_afpow")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1582170]
+
+[node name="Timer" type="Timer" parent="." unique_id=104973594]
+wait_time = 0.1
+autostart = true
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=441887729]
+script = ExtResource("3_afpow")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=395101529]
+position = Vector2(0, -8)
+shape = SubResource("CapsuleShape2D_8jovo")
+
+[node name="Timer" type="Timer" parent="Hitbox" unique_id=1602153680]
+wait_time = 0.2
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="body_entered" from="Hitbox" to="Hitbox" method="_on_body_entered"]
+[connection signal="timeout" from="Hitbox/Timer" to="Hitbox" method="_on_timer_timeout"]
